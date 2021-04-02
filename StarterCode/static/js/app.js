@@ -1,88 +1,11 @@
-// d3.json('../../samples.json').then(function(data){
-//       let dd_list = data.names;
-//       let demo_data = data.metadata;
-//       let samples = data.samples;
-//       var dropdown = d3.select('#selDataset');
-//       dd_list.forEach(element => {
-//          dropdown.append('option').text(element).property('value',element)
-         
-//        });
-//        sample_id = d3.select('#selDataset').property('value');
-//        idx = getDemoData(sample_id, demo_data);
-//        console.log(samples);
-//        m_data = d3.select('.panel-body');
-//        table = m_data.append('table')
-//        tbody = table.append('tbody')
-//        row = tbody.append('row')
-//        cell = row.append('td')  // how to use foreACH HERE
-//        cell.text('id : ' +sample_id)
-//        row = tbody.append('tr')
-//        cell = row.append('td')
-//        cell.text('Ethnicicty : ' +demo_data[idx]['ethnicity'])
-//        row = tbody.append('tr')
-//        cell = row.append('td')
-//        cell.text('Age : ' +demo_data[idx].age)
-//        row = tbody.append('tr')
-//        cell = row.append('td')
-//        cell.text('Gender : ' +demo_data[idx].gender)
-//        row = tbody.append('tr')
-//        cell = row.append('td')
-//        cell.text('Location : ' +demo_data[idx].location)
-//        row = tbody.append('tr')
-//        cell = row.append('td')
-//        cell.text('BBtype : ' +demo_data[idx].bbtype)
-//        row = tbody.append('tr')
-//        cell = row.append('td')
-//        cell.text('Wfreq: ' +demo_data[idx].wfreq)
-      
-//        if (samples[idx]['id'] == sample_id){
-//           x = samples[idx]['otu_ids']
-//           y = samples[idx]['sample_values']
-//           trace = {
-//             'type':'bar' ,
-//             'x': x,
-//             'y': y,
-//             'orientation':'h',
-//             'mode':'markers',
-//             'markers': {size:20},
-//             'text':samples[idx]['otu_labels']
-//             }
-//          layout = {
-//             'barmode': 'stack'
-//          }
-//           data = [trace]
-//           Plotly.newPlot('bar',data, layout)
-//        }
-
-
-
-       
-
-   
-       
-// });
-
-
-
-// function getDemoData(sid, try_data){
-//    var idx
-
-//    for (var i = 0; i<153;i++){
-//       if (try_data[i].id == sid){
-//          return i
-//       }
-
-//    }
-
-// }
-
 function grabData(sample){
+   //connect to collect data from json
    d3.json('../../samples.json').then(function(data){
-      // let dd_list = data.names;
+      //meta data for each sampleID
       var demo_data = data.metadata;
-      // let samples = data.samples;
       var resultArr = demo_data.filter(sampleObject=> sampleObject.id == sample)
       var result = resultArr[0]
+      console.log(resultArr)
       var panel = d3.select('#sample-metadata')
       panel.html('')
       Object.entries(result).forEach(([k,v])=>{
@@ -94,7 +17,8 @@ function grabData(sample){
 
 };
 
-function buildCharts(sample){
+function buildCharts(sample,n){
+   //connect to collect data from json
    d3.json('../../samples.json').then(function(data){
       var samples = data.samples 
       var resultArr = samples.filter(sampleObject=> sampleObject.id == sample)
@@ -102,6 +26,8 @@ function buildCharts(sample){
       var ids = result.otu_ids
       var labels = result.otu_labels
       var sampleValues = result.sample_values
+
+      // Bubble Chart
       var bubblesLayout = {
          'title': ' Bubble chart',
          'margin': {
@@ -113,44 +39,143 @@ function buildCharts(sample){
          },
          'margin' : {t:30}
       };
-      var bubblesData = {
+      var bubblesTrace = {
          'x': ids,
          'y': sampleValues,
          'text':labels,
+         'sizemode': 'area',
          'mode': 'markers',
-         'markers':{
+         'marker':{
             'size' : sampleValues,
             'color': ids,
             'colorscale': 'Earth'
            }
          }
-      Plotly.newPlot('bubble', [bubblesData], bubblesLayout);
+      //Horizontal Bar
+      var barhLayout ={
+         'title' : 'bar graph',
+         'x-axis':{
+            'title': 'xtitle'
+         },
+         'y-axis': {
+            'title':'ytitle'
+         }
+      };
+
+      new_ID=[]
+      Object.entries(ids).forEach(([k,v])=>{
+    
+         new_ID.push(('otu-'+ v))
+      
+
+      })
+
+
+
+      var barhTrace = {
+         'x': new_ID.slice(0,11), 
+         'y': sampleValues.slice(0,11),
+         'width': 15,
+         'bargap':2,
+         'type': 'bar',
+         'orientation': 'h'
+      }
+    
+
+
+      //Gauge Chart
+      wash = data['metadata'][n]['wfreq'];
+
+         console.log(wash)
+      var gaugeTrace = {
+         type: "indicator",
+         mode: "gauge+number",
+         // delta: { reference: 20, increasing: { color: "RebeccaPurple" } },
+         domain: { x: [0, 1], y: [0, 1] },
+         gauge: {
+            axis: { range: [null, 10] },
+            // colorscale: 'Earth',
+            // steps: [
+            //    { range: [0, 1]},
+            //    { range: [1,2] },
+            //    { range: [2,3] },
+            //    { range: [3,4] },              
+            //    { range: [4,5] },
+            //    { range: [5,6] },              
+            //    { range: [6,7] },
+            //    { range: [7,8] },              
+            //    { range: [8,9] },
+              
+            // ],
+            threshold: {
+              line: { color: "red", width: 4 },
+              thickness: 0.75,
+              value: wash
+            },
+         },
+		   value: wash,
+		   title: { text: "Scrubs per week" }
+
+      }
+      var degrees = 115, radius = 10;
+      var radians = degrees * Math.PI / 180;
+      var x = -1 * radius * Math.cos(radians);
+      var y = radius * Math.sin(radians);
+      var gaugelayout = { 
+
+         shapes:[{
+            type: 'line',
+            x0: 0.5,
+            y0: 0.2,
+            x1: x,
+            y1: 1,
+            line: {
+              color: 'black',
+              width: 3
+            }
+          }],
+         width: 600, 
+         height: 500, 
+         margin: { t: 0, b: 0 } ,
+         xaxis: {visible: false, range: [-1, 1]},
+         yaxis: {visible: false, range: [-1, 1]}
+      };
+
+
+
+      // Creating the plots
+      Plotly.newPlot('bubble', [bubblesTrace], bubblesLayout);
+      Plotly.newPlot('bar', [barhTrace], barhLayout);
+      Plotly.newPlot('gauge',[gaugeTrace],gaugelayout);
       })
    
    }
 
+   d3.selectAll("#selDataset").on("change", updatePlotly);
 
-//       trace = {
-//                      'type':'bar' ,
-//                      'x': x,
-//                      'y': y,
-//                      'orientation':'h',
-//                      'mode':'markers',
-//                      'markers': {size:20},
-//                      'text':samples[idx]['otu_labels']
-//                      }
-//                   layout = {
-//                      'barmode': 'stack'
-//                   }
-//                    data = [trace]
-//                    Plotly.newPlot('bar',data, layout)
+   function updatePlotly() {
+      
+      var dropdownMenu = d3.select("#selDataset");
+      var new_sample = dropdownMenu.property("value");
+      d3.json('../../samples.json').then(function(data){
+         var samples = data.samples 
+         var resultArr = samples.filter(sampleObject=> sampleObject.id == new_sample)
 
-// }
+         for (var i =0;i <153;i++){
+            if (samples[i].id==new_sample){
+               idx = i
+           }
+         }
+         grabData(new_sample)
+         buildCharts(new_sample,idx)
+     });
 
-
-
+      
+    
+   }
 
 function init(){
+
       var dropdown = d3.select('#selDataset');
       d3.json('../../samples.json').then((data)=>{
          var dd_list = data.names;
@@ -159,11 +184,13 @@ function init(){
                .append('option')
                .text(sample)
                .property('value',sample)
-         // var firstSample = dd_list[0]
+
          });
+
+         
          var firstSample = dd_list[0]
          grabData(firstSample)
-         buildCharts(firstSample)
+         buildCharts(firstSample,0)
       })
 
 
