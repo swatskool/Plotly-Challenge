@@ -72,10 +72,9 @@ function buildCharts(sample,n){
          
         'type': 'bar',
          'orientation': 'h',
-         'marker':{
-            'color' : otu_labels,
+         'text' : otu_labels
 
-           }
+           
       }
     
 
