@@ -54,13 +54,8 @@ function buildCharts(sample,n){
          }
       //Horizontal Bar
       var barhLayout ={
-         'title' : 'bar graph',
-         'x-axis':{
-            'title': 'xtitle'
-         },
-         'y-axis': {
-            'title':'ytitle'
-         }
+         'title' : 'Top 10 Belly Button Cultures',
+
       };
 
       new_ID=[]
@@ -102,7 +97,7 @@ function buildCharts(sample,n){
 
          },
 		   value: wash,
-		   title: { text: "Scrubs per week" }
+		   title: { text: "Belly Button Washing frequency \n Scrubs per week" }
 
       }
       var gaugelayout = { 
