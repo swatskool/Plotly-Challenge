@@ -71,8 +71,6 @@ function buildCharts(sample,n){
 
       })
 
-      console.log(otu_labels)
-
       var barhTrace = {
          'x': sampleValues.slice(0,10).reverse(),
          'y': new_ID.slice(0,10), 
@@ -80,7 +78,7 @@ function buildCharts(sample,n){
         'type': 'bar',
          'orientation': 'h',
          'marker':{
-            'name' : otu_labels,
+            'color' : otu_labels,
 
            }
       }
