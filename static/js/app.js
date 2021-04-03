@@ -35,9 +35,6 @@ function buildCharts(sample,n){
             t: 0
          },
          'hovermode' : 'closest',
-         'x-axis': {
-            'title': 'x title'          
-         },
          'margin' : {t:30}
       };
       var bubblesTrace = {
@@ -96,7 +93,7 @@ function buildCharts(sample,n){
 
          },
 		   value: wash,
-		   title: { text: "Belly Button Washing frequency \n Scrubs per week" }
+		   title: { text: "Belly Button Washing frequency %n Scrubs per week" }
 
       }
       var gaugelayout = { 
