@@ -1,6 +1,6 @@
 function grabData(sample){
    //connect to collect data from json
-   d3.json('../../samples.json').then(function(data){
+   d3.json('samples.json').then(function(data){
       //meta data for each sampleID
       var demo_data = data.metadata;
       var resultArr = demo_data.filter(sampleObject=> sampleObject.id == sample)
@@ -19,7 +19,7 @@ function grabData(sample){
 
 function buildCharts(sample,n){
    //connect to collect data from json
-   d3.json('../../samples.json').then(function(data){
+   d3.json('samples.json').then(function(data){
       var samples = data.samples 
       var resultArr = samples.filter(sampleObject=> sampleObject.id == sample)
       var result = resultArr[0]
@@ -133,7 +133,7 @@ function buildCharts(sample,n){
       
       var dropdownMenu = d3.select("#selDataset");
       var new_sample = dropdownMenu.property("value");
-      d3.json('../../samples.json').then(function(data){
+      d3.json('samples.json').then(function(data){
          var samples = data.samples 
          var resultArr = samples.filter(sampleObject=> sampleObject.id == new_sample)
 
@@ -153,7 +153,7 @@ function buildCharts(sample,n){
 function init(){
 
       var dropdown = d3.select('#selDataset');
-      d3.json('../../samples.json').then((data)=>{
+      d3.json('samples.json').then((data)=>{
          var dd_list = data.names;
          dd_list.forEach((sample)=>{
             dropdown
