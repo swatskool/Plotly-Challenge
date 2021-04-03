@@ -26,6 +26,7 @@ function buildCharts(sample,n){
       var ids = result.otu_ids
       var labels = result.otu_labels
       var sampleValues = result.sample_values
+      var otu_labels = result.otu_labels
 
       // Bubble Chart
       var bubblesLayout = {
@@ -70,14 +71,18 @@ function buildCharts(sample,n){
 
       })
 
-
+      console.log(otu_labels)
 
       var barhTrace = {
          'x': sampleValues.slice(0,10).reverse(),
          'y': new_ID.slice(0,10), 
          
         'type': 'bar',
-         'orientation': 'h'
+         'orientation': 'h',
+         'marker':{
+            'name' : otu_labels,
+
+           }
       }
     
 
