@@ -73,11 +73,10 @@ function buildCharts(sample,n){
 
 
       var barhTrace = {
-         'x': new_ID.slice(0,11), 
-         'y': sampleValues.slice(0,11),
-         'width': 15,
-         'bargap':2,
-         'type': 'bar',
+         'x': sampleValues.slice(0,10).reverse(),
+         'y': new_ID.slice(0,10), 
+         
+        'type': 'bar',
          'orientation': 'h'
       }
     
@@ -88,57 +87,28 @@ function buildCharts(sample,n){
 
          console.log(wash)
       var gaugeTrace = {
+         domain: { x: [0, 1], y: [0, 1] },
          type: "indicator",
          mode: "gauge+number",
-         // delta: { reference: 20, increasing: { color: "RebeccaPurple" } },
-         domain: { x: [0, 1], y: [0, 1] },
+
+         
          gauge: {
-            axis: { range: [null, 10] },
-            // colorscale: 'Earth',
-            // steps: [
-            //    { range: [0, 1]},
-            //    { range: [1,2] },
-            //    { range: [2,3] },
-            //    { range: [3,4] },              
-            //    { range: [4,5] },
-            //    { range: [5,6] },              
-            //    { range: [6,7] },
-            //    { range: [7,8] },              
-            //    { range: [8,9] },
-              
-            // ],
-            threshold: {
-              line: { color: "red", width: 4 },
-              thickness: 0.75,
-              value: wash
-            },
+            axis: { visible:true, range:[null,9], nticks:10},
+            bar: {color:'brown'},
+
+
          },
 		   value: wash,
 		   title: { text: "Scrubs per week" }
 
       }
-      var degrees = 115, radius = 10;
-      var radians = degrees * Math.PI / 180;
-      var x = -1 * radius * Math.cos(radians);
-      var y = radius * Math.sin(radians);
       var gaugelayout = { 
 
-         shapes:[{
-            type: 'line',
-            x0: 0.5,
-            y0: 0.2,
-            x1: x,
-            y1: 1,
-            line: {
-              color: 'black',
-              width: 3
-            }
-          }],
+     
          width: 600, 
          height: 500, 
          margin: { t: 0, b: 0 } ,
-         xaxis: {visible: false, range: [-1, 1]},
-         yaxis: {visible: false, range: [-1, 1]}
+
       };
 
 
@@ -146,6 +116,7 @@ function buildCharts(sample,n){
       // Creating the plots
       Plotly.newPlot('bubble', [bubblesTrace], bubblesLayout);
       Plotly.newPlot('bar', [barhTrace], barhLayout);
+      console.log('here')
       Plotly.newPlot('gauge',[gaugeTrace],gaugelayout);
       })
    
